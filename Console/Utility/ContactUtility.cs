@@ -3,8 +3,7 @@
 static class ContactUtility
 {
 
-    /// <summary>Initializes ContactUtility. Loads contacts from persistent storage.</summary>
-    public static void Initialize()
+    static ContactUtility()
     {
         if (File.Exists("contacts.json"))
             contacts = JsonSerializer.Deserialize<List<Contact>>(File.ReadAllText("contacts.json")) ?? new();

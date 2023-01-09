@@ -2,9 +2,6 @@
 void Main()
 {
 
-    //Load contacts from storage
-    ContactUtility.Initialize();
-
     while (true)
     {
 
