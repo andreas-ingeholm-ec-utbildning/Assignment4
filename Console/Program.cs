@@ -2,11 +2,10 @@
 void Main()
 {
 
+    //Load contacts from storage
     ContactUtility.Initialize();
 
-    bool isQuitting = false;
-
-    while (!isQuitting)
+    while (true)
     {
 
         Console.Clear();
@@ -21,12 +20,61 @@ void Main()
 
     }
 
-    ContactUtility.Save();
-
 }
 
 void BadInput() =>
     Console.WriteLine("Bad input. Please type the number of the corresponding option.");
+
+void List()
+{
+
+    var contacts = ContactUtility.Enumerate();
+
+    Console.Clear();
+
+    WriteColumn("Firstname", "Lastname", "Email address");
+
+    if (!contacts.Any())
+        Console.WriteLine("No contacts added.");
+    else
+        foreach (var contact in contacts)
+            WriteColumn(contact.FirstName, contact.LastName, contact.Email);
+
+    Console.WriteLine("\nPress any key to return");
+    _ = Console.ReadKey();
+
+    void WriteColumn(params string?[] columns) =>
+        Console.WriteLine(string.Join(string.Empty, columns.Select((c, i) => (c ?? "").PadRight(ColumnWidths().ElementAtOrDefault(i) + 4))));
+
+    IEnumerable<int> ColumnWidths()
+    {
+
+        var items = contacts;
+
+        if (!items.Any())
+            items = new[] { new Contact() };
+
+        return new[]
+        {
+            items.Select(c => Math.Max(c.FirstName?.Length ?? 0, "Firstname".Length)).Max(),
+            items.Select(c => Math.Max(c.LastName?.Length ?? 0, "Lastname".Length)).Max(),
+            items.Select(c => Math.Max(c.Email?.Length ?? 0, "Email address".Length)).Max()
+        };
+
+    }
+
+}
+
+void ViewContact(Contact contact)
+{
+
+    Console.Clear();
+    WriteDetails(contact);
+
+    Console.WriteLine("Press any key to return");
+    _ = Console.ReadKey();
+
+}
 
 void Add(Contact? contact = null, int? fieldIndex = null, bool ignorePrompt = false)
 {
@@ -47,7 +95,7 @@ void Add(Contact? contact = null, int? fieldIndex = null, bool ignorePrompt = fa
     Console.Clear();
     WriteDetails(contact);
 
-    Console.WriteLine("\nÄr detta korrekt?");
+    Console.WriteLine("\nIs this information correct?");
     var option = ConsoleUtility.Choose(
           "Yes",
           "Cancel",
@@ -91,50 +139,15 @@ void Add(Contact? contact = null, int? fieldIndex = null, bool ignorePrompt = fa
 
 }
 
-void List()
-{
-
-    Console.Clear();
-
-    var contacts = ContactUtility.Enumerate();
-
-    WriteColumn("Firstname", "Lastname", "Email address");
-    foreach (var contact in contacts)
-        WriteColumn(contact.FirstName, contact.LastName, contact.Email);
-
-    if (!contacts.Any())
-        Console.WriteLine("No contacts added.");
-
-    Console.WriteLine("\nPress any key to return");
-    _ = Console.ReadKey();
-
-    void WriteColumn(params string?[] columns) =>
-        Console.WriteLine(string.Join(string.Empty, columns.Select((c, i) => (c ?? "").PadRight(ColumnWidths().ElementAtOrDefault(i) + 4))));
-
-    IEnumerable<int> ColumnWidths()
-    {
-
-        var items = contacts;
-
-        if (!items.Any())
-            items = new[] { new Contact() };
-
-        return new[]
-        {
-            items.Select(c => Math.Max(c.FirstName?.Length ?? 0, "Firstname".Length)).Max(),
-            items.Select(c => Math.Max(c.LastName?.Length ?? 0, "Lastname".Length)).Max(),
-            items.Select(c => Math.Max(c.Email?.Length ?? 0, "Email address".Length)).Max()
-        };
-
-    }
-}
-
 void Remove(Contact contact)
 {
 
     Console.Clear();
+    Console.WriteLine("Are you sure you wish to remove the following contact?\n");
+    WriteDetails(contact);
+    Console.WriteLine();
 
-    if (ConsoleUtility.Prompt(() => { Console.WriteLine("Are you sure you wish to remove the following contact?\n"); WriteDetails(contact); Console.WriteLine(); }))
+    if (ConsoleUtility.Prompt(""))
     {
         ContactUtility.Remove(contact);
         List();
@@ -149,17 +162,6 @@ void WriteDetails(Contact contact)
     Console.WriteLine("Email address: " + contact.Email);
     Console.WriteLine("Phone number: " + contact.PhoneNumber);
     Console.WriteLine("Address: " + contact.Address);
-}
-
-void ViewContact(Contact contact)
-{
-
-    Console.Clear();
-    WriteDetails(contact);
-
-    Console.WriteLine("Press any key to return");
-    _ = Console.ReadKey();
-
 }
 
 void ChooseContact(Action<Contact> continueWith)
