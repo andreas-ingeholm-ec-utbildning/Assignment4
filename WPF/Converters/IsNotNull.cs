@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace WPF.Converters;
+namespace Assignment4.Converters;
 
 public class IsNotNull : MarkupExtension, IValueConverter
 {

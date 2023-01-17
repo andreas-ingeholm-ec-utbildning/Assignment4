@@ -4,64 +4,65 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Assignment4"
-        xmlns:converters="clr-namespace:WPF.Converters"
-        xmlns:commands="clr-namespace:WPF.Commands"
+        xmlns:converters="clr-namespace:Assignment4.Converters"
+        xmlns:commands="clr-namespace:Assignment4.Commands"
+        xmlns:viewModels="clr-namespace:Assignment4.ViewModels"
+        xmlns:views="clr-namespace:Assignment4.Views"
+        xmlns:wpfui="http://schemas.lepo.co/wpfui/2022/xaml"
         mc:Ignorable="d"
-        Title="Address book" Height="450" Width="800" ResizeMode="CanMinimize"
-        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+        Background="#202020"
+        TextElement.Foreground="White"
+        WindowStartupLocation="CenterScreen" FontFamily="Segoe UI Semilight"
+        Title="Address book" MinHeight="350" MinWidth="600" Height="350" Width="600">
 
-    <Window.Resources>
-        <ResourceDictionary>
-
-            <Style TargetType="Button">
-                <Setter Property="Width" Value="42"/>
-                <Setter Property="Height" Value="42"/>
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="BorderThickness" Value="0"/>
-            </Style>
-            
-        </ResourceDictionary>
-    </Window.Resources>
+    <Window.DataContext>
+        <viewModels:Main/>
+    </Window.DataContext>
     
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="200"/>
-            <ColumnDefinition Width="10"/>
-            <ColumnDefinition MinWidth="200"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        
+        <StackPanel Margin="4">
+            
+            <StackPanel.Resources>
 
-        <DockPanel>
-            
-            <Border DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="DimGray" Margin="5,0,0,0">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="🗑" Command="{commands:RemoveContact}" CommandParameter="{Binding SelectedContact}"/>
-                    <Button Content="+" Command="{commands:CreateContact}"/>
-                </StackPanel>
-            </Border>
-            
-            <ListBox Grid.Column="0" ItemsSource="{local:Contacts}" Background="{x:Null}" BorderThickness="0">
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type local:Contact}">
-                        <TextBlock>
-                            <TextBlock Text="{Binding FullName}"/>
-                            <TextBlock Text="{Binding Email}"/>
-                        </TextBlock>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            
-        </DockPanel>
+                <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                    <Setter Property="Width" Value="64"/>
+                    <Setter Property="Height" Value="64"/>
+                    <Setter Property="FontSize" Value="26"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Margin" Value="0,0,0,4"/>
+                </Style>
 
-        <!--Grid splitter, with larger hit area (background invisible using below border as visual)-->
-        <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Stretch" Background="#01000000"/>
-        <Border Grid.Column="1" IsHitTestVisible="False" Background="DimGray" Width="1" Margin="0,5" HorizontalAlignment="Center"/>
+            </StackPanel.Resources>
+            
+            <ToggleButton Command="{Binding GoToListContactsCommand}" Tag="{x:Type viewModels:ListContacts}" IsChecked="{Binding IsListContactsView, Mode=OneWay}"
+                          ToolTip="View contacts">
+                <wpfui:SymbolIcon Symbol="BookOpen48" FontSize="26"/>
+            </ToggleButton>
 
-        <StackPanel Grid.Column="2" DataContext="{Binding SelectedContact}" IsEnabled="{Binding Converter={converters:IsNull}}">
-            
-            
+            <ToggleButton Command="{Binding GoToAddContactCommand}" Tag="{x:Type viewModels:ListContacts}" IsChecked="{Binding IsAddContactView, Mode=OneWay}"
+                          ToolTip="Add contact">
+                <wpfui:SymbolIcon Symbol="AlbumAdd24" FontSize="26"/>
+            </ToggleButton>
             
         </StackPanel>
+        
+        <ContentControl Grid.Column="2" Content="{Binding CurrentViewModel}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type viewModels:ListContacts}">
+                    <views:ListContacts/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModels:AddContact}">
+                    <views:AddContact/>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
         
     </Grid>
     

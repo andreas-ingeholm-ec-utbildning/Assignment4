@@ -5,14 +5,18 @@ using System.Windows.Markup;
 
 namespace Assignment4.Converters;
 
-public class IsNull : MarkupExtension, IValueConverter
+public class InvertBool : MarkupExtension, IValueConverter
 {
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
-        value is null;
+        value is bool b
+            ? !b
+            : value;
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
-        throw new NotImplementedException();
+        value is bool b
+            ? !b
+            : value;
 
     public override object ProvideValue(IServiceProvider serviceProvider) => this;
 

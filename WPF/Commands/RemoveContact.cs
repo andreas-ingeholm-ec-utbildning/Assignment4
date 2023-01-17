@@ -2,8 +2,9 @@
 using System.Windows.Input;
 using System.Windows.Markup;
 using Assignment4;
+using Assignment4.Models;
 
-namespace WPF.Commands;
+namespace Assignment4.Commands;
 
 public class RemoveContact : MarkupExtension, ICommand
 {

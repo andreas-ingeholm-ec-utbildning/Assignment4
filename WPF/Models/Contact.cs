@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assignment4;
+namespace Assignment4.Models;
 
 public class Contact
 {
