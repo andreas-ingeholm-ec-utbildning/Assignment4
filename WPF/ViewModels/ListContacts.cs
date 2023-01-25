@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using Assignment4.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using ContactLib.Models;
 
 namespace Assignment4.ViewModels;
 

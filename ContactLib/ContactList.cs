@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.IO;
 using System.Text.Json.Serialization;
-using Assignment4.Models;
-using Assignment4.Utility;
+using ContactLib.Utility;
 
-namespace Assignment4;
+namespace ContactLib.Models;
 
 /// <summary>Represents a list of <see cref="Contact"/>.</summary>
 public class ContactList : ObservableCollection<Contact>
@@ -21,7 +18,10 @@ public class ContactList : ObservableCollection<Contact>
     {
 
         if (FileUtility.Load<ContactList>(file, out var result))
+        {
+            result.Path = file;
             return result;
+        }
 
         if (createIfNotExists)
             return new(file);
@@ -74,7 +74,7 @@ public class ContactList : ObservableCollection<Contact>
 
     /// <summary>The path to file file that this <see cref="ContactList"/> is persisted at.</summary>
     /// <remarks><see cref="Save(string)"/> can be used to save an in-memory <see cref="ContactList"/>.</remarks>
-    public string? Path { get; private set; }
+    [JsonIgnore] public string? Path { get; private set; }
 
     /// <summary>Creates a contact with the specified fields.</summary>
     /// <param name="firstName">The first name of the contact.</param>

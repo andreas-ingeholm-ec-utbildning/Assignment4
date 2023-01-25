@@ -17,4 +17,8 @@
     <Folder Include="Commands\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ContactLib\ContactLib.csproj" />
+  </ItemGroup>
+
 </Project>

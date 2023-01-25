@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using Assignment4.Models;
+using ContactLib.Models;
 
 namespace Assignment4;
 

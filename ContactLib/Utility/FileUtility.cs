@@ -1,13 +1,13 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 
-namespace Assignment4.Utility;
+namespace ContactLib.Utility;
 
+/// <summary>Provides utility functions for working with files.</summary>
 public static class FileUtility
 {
 
+    /// <summary>Reads and deserializes the file, returns <see langword="true"/> if successful.</summary>
     public static bool Load<T>(string file, [NotNullWhen(true)] out T? value)
     {
 
@@ -26,6 +26,7 @@ public static class FileUtility
 
     }
 
+    /// <summary>Serializes and writes <paramref name="value"/> to disk.</summary>
     public static void Save<T>(string file, T value)
     {
 
