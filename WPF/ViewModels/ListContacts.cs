@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Linq;
 using Assignment4.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -9,8 +8,6 @@ namespace Assignment4.ViewModels;
 public partial class ListContacts : ViewModel
 {
 
-    public ReadOnlyObservableCollection<Contact> Contacts => ContactUtility.Contacts;
-
     [ObservableProperty]
     private Contact? selectedContact;
 
@@ -19,12 +16,8 @@ public partial class ListContacts : ViewModel
     {
 
         var i = Contacts.IndexOf(contact);
-        ContactUtility.RemoveContact(contact);
-
-        if (i == -1)
-            return;
-
-        SelectedContact = Contacts.ElementAtOrDefault(i) ?? Contacts.LastOrDefault();
+        if (Contacts.Remove(contact) && i >= 0)
+            SelectedContact = Contacts.ElementAtOrDefault(i) ?? Contacts.LastOrDefault();
 
     }
 

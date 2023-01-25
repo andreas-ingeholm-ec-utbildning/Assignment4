@@ -35,7 +35,7 @@ public partial class AddContact : ViewModel
     //Gets if all fields have a value, if they have, then they will also have been validated.
     //Issue with base.ValidateAllProperties() is that it triggers error visual, which I don't
     //want before user has interacted with fields
-    bool isFilled =>
+    bool IsFilled =>
         !GetType().GetProperties().
         Where(p => p.PropertyType == typeof(string)).
         Select(p => p.GetValue(this)).
@@ -44,13 +44,13 @@ public partial class AddContact : ViewModel
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
-        CanAdd = !HasErrors && isFilled;
+        CanAdd = !HasErrors && IsFilled;
     }
 
     [RelayCommand]
     void Add()
     {
-        ContactUtility.CreateContact(firstName, lastName, email, phoneNumber, address);
+        Contacts.CreateContact(firstName, lastName, email, phoneNumber, address);
         ReturnToMainView();
     }
 

@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Assignment4"
         xmlns:converters="clr-namespace:Assignment4.Converters"
-        xmlns:commands="clr-namespace:Assignment4.Commands"
         xmlns:viewModels="clr-namespace:Assignment4.ViewModels"
         xmlns:views="clr-namespace:Assignment4.Views"
         xmlns:wpfui="http://schemas.lepo.co/wpfui/2022/xaml"
