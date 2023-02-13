@@ -1,3 +1,2 @@
 # Assignment4
-C# / Console.\
-C# / WPF.
+C# + Console + WPF.
